@@ -19,16 +19,12 @@ form_cats_s = form_cats.to_string()
 form_dogs = MultipartEncoder(fields={'vote': 'Dogs'})
 form_dogs_s = form_dogs.to_string()
 
-x = [] # le temps
-y = [] # nombres de réponses
-
 res = []
 
 lines = defaultdict(list)
 
 instances = Counter()
 instances_l = threading.Lock()
-
 
 def update_graph(_):
     global index
@@ -42,7 +38,7 @@ def update_graph(_):
         instances.clear()
 
     for instance in lines:
-        indexes = list(range(len(lines[instance])))
+        indexes = list(range(len()))
         plt.plot(indexes, lines[instance], label = instance, linestyle="-.")
 
 def vote():
@@ -66,7 +62,6 @@ def vote():
         container_id = r.headers['X-HANDLED-BY']
         
         print(container_id)
-
         
         with instances_l:
             instances[container_id] += 1
@@ -79,7 +74,6 @@ def test_charge(exc):
         future = exc.submit(vote)
         futures.append(future)
         time.sleep(3)
-
 
 with cf.ThreadPoolExecutor(9) as exc:
     # Création d'un thread séparé
